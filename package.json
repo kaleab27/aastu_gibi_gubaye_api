@@ -16,9 +16,13 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@libsql/sqlite3": "^0.3.1",
+    "@types/dotenv": "^6.1.1",
+    "dotenv": "^16.4.5",
     "express": "^4.21.0",
-    "mongoose": "^8.7.0",
+    "reflect-metadata": "^0.2.2",
     "ts-node": "^10.9.2",
+    "typeorm": "^0.3.20",
     "typescript": "^5.6.2"
   },
   "devDependencies": {
