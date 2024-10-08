@@ -1,7 +1,8 @@
-import { Request, Response } from "express";
+import {Request, Response} from 'express';
 
 export function SayHi(req: Request, res: Response) {
-    res.json({
-        message: "hello"
-    })
+  res.json({
+    message: 'hello',
+    some: ' hey',
+  });
 }
