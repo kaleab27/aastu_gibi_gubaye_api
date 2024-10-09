@@ -5,10 +5,8 @@
     "emitDecoratorMetadata": true,
     "esModuleInterop": true,
     "rootDir": ".",
-    "outDir": "build"
+    "outDir": "build",
+    "strictPropertyInitialization": false
   },
-  "include": [
-    "./**/*.ts",
-    "test/**/*.ts"
-  ]
+  "include": ["./**/*.ts", "test/**/*.ts"]
 }
