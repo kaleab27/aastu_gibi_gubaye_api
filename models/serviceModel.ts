@@ -1,4 +1,4 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, ManyToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Student} from './studentMode';
 
 @Entity('service')
@@ -6,9 +6,9 @@ export class Service {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
-  service: string;
+  @Column({name:'name'})
+  name: string;
 
-  @OneToMany(() => Student, student => student.service)
+  @ManyToMany(() => Student, (student) => student.service)
   students: Student[];
 }

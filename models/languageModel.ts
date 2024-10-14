@@ -1,4 +1,4 @@
-import {Column, Entity, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn} from 'typeorm';
 import {Student} from './studentMode';
 
 @Entity('language')
@@ -6,9 +6,9 @@ export class Language {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({name: 'language'})
-  language: string;
+  @Column({name:"name"})
+  name: string;
 
-  @OneToMany(() => Student, student => student.language)
+  @ManyToMany(() => Student, student => student.language)
   students: Student[];
 }
