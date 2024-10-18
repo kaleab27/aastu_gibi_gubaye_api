@@ -12,7 +12,9 @@ exports.AppDataSource = new typeorm_1.DataSource({
     driver: sqlite3_1.default,
     flags: 0x00000040,
     database: environment_vars_1.envs.tursoUrl,
-    entities: ['./models/**/*.ts'],
+    entities: process.env.NODE_ENV === 'production'
+        ? ['./dist/models/**/*.js']
+        : ['./models/**/*.ts'],
     synchronize: process.env.NODE_ENV === 'production' ? false : true,
 });
 //# sourceMappingURL=data_source.js.map
