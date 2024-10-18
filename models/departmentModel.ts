@@ -6,7 +6,7 @@ export class Department {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({name: 'department'})
+  @Column({name: 'department', type: 'varchar'})
   department!: string;
 
   @OneToMany(() => Student, student => student.department)

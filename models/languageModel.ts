@@ -12,7 +12,7 @@ export class Language {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({name: 'name'})
+  @Column({name: 'name', type: 'varchar'})
   name!: string;
 
   @ManyToMany(() => Student, student => student.language)
