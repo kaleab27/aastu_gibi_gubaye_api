@@ -8,5 +8,5 @@ export const AppDataSource = new DataSource({
   flags: 0x00000040,
   database: envs.tursoUrl,
   entities: ['./models/**/*.ts'],
-  synchronize: true,
+  synchronize: process.env.NODE_ENV === 'production' ? false : true,
 });
