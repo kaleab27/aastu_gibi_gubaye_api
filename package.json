@@ -15,6 +15,7 @@
     "build": "rimraf dist && tsc",
     "ts.check": "tsc --project tsconfig.json",
     "add-build": "git add dist",
+    "ts-build": "npm run ts.check; npm run build; npm run add-build",
     "pre-commit": [
       "ts.check",
       "build",
