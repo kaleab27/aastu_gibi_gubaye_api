@@ -13,15 +13,20 @@
     "pretest": "npm run compile",
     "posttest": "npm run lint",
     "build": "rimraf dist && tsc",
-  "ts.check": "tsc --project tsconfig.json",
-  "add-build": "git add dist",
-    "pre-commit": ["ts.check","build","add-build"]
+    "ts.check": "tsc --project tsconfig.json",
+    "add-build": "git add dist",
+    "pre-commit": [
+      "ts.check",
+      "build",
+      "add-build"
+    ]
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@libsql/sqlite3": "^0.3.1",
     "@types/dotenv": "^6.1.1",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "reflect-metadata": "^0.2.2",
@@ -32,6 +37,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "20.12.7",
     "gts": "^5.3.1",
