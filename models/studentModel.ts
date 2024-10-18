@@ -1,9 +1,18 @@
 import 'reflect-metadata';
-import {Column, Entity, JoinColumn, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn} from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  ManyToMany,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import {Department} from './departmentModel';
 import {Confession} from './confessionModel';
 import {Service} from './serviceModel';
 import {Language} from './languageModel';
+import {nullable} from 'zod';
 
 @Entity('student')
 export class Student {
@@ -22,7 +31,7 @@ export class Student {
   @Column({name: 'gender'})
   gender!: string;
 
-  @Column({name: 'baptismal_name'})
+  @Column({name: 'baptismal_name', nullable: true})
   baptismal_name?: string;
 
   @Column({name: 'phone_number'})
@@ -33,23 +42,25 @@ export class Student {
   language!: Language[];
 
   @ManyToOne(() => Department, department => department.students)
-  @JoinColumn({name:'department_id'})
+  @JoinColumn({name: 'department_id'})
   department!: Department;
 
-  @Column({name: 'email', unique: true})
+  @Column({name: 'email', unique: true, nullable: true})
   email?: string;
 
-  @ManyToMany(() => Service, service => service.students)
+  @ManyToMany(() => Service, service => service.students, {nullable: true})
   // @JoinTable()
   service?: Service[];
 
-  @Column({name: 'role'})
-  role!: string;
+  @Column({name: 'role', default: 'std_usr'})
+  role?: string;
 
-  @Column({name: 'current_year'})
+  @Column({name: 'current_year', nullable: true})
   current_year?: number;
 
-  @ManyToOne(() => Confession, confession => confession.students)
-  @JoinColumn({name:'confession_id'})
+  @ManyToOne(() => Confession, confession => confession.students, {
+    nullable: true,
+  })
+  @JoinColumn({name: 'confession_id'})
   confession?: Confession;
 }
