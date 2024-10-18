@@ -10,10 +10,10 @@ import {Student} from './studentModel';
 @Entity('language')
 export class Language {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({name: 'name'})
-  name: string;
+  name!: string;
 
   @ManyToMany(() => Student, student => student.language)
   students?: Student[];

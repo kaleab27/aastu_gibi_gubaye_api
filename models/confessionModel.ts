@@ -4,14 +4,14 @@ import {Student} from './studentModel';
 @Entity('confession')
 export class Confession {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({name: 'name'})
-  name: string;
+  name!: string;
 
   @Column({name: 'phone'})
-  phoneNumber: string;
+  phoneNumber!: string;
 
   @OneToMany(() => Student, student => student.confession)
-  students: Student[];
+  students?: Student[];
 }
