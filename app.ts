@@ -7,7 +7,7 @@ import {studentRouter} from './routes/student.routes';
 
 const app: Express = express();
 
-app.use(cors({origin: '*'}));
+app.use(cors());
 app.use(json());
 
 app.use('/api/user', studentRouter);
