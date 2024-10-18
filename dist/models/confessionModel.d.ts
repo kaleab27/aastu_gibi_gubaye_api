@@ -3,5 +3,5 @@ export declare class Confession {
     id: string;
     name: string;
     phoneNumber: string;
-    students: Student[];
+    students?: Student[];
 }

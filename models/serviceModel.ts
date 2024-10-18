@@ -4,11 +4,11 @@ import {Student} from './studentModel';
 @Entity('service')
 export class Service {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  id!: string;
 
   @Column({name: 'name'})
-  name: string;
+  name!: string;
 
   @ManyToMany(() => Student, student => student.service)
-  students: Student[];
+  students?: Student[];
 }
