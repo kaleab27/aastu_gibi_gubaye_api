@@ -6,6 +6,12 @@
     "esModuleInterop": true,
     "rootDir": ".",
     "outDir": "dist",
+    "baseUrl": ".",
+    "sourceMap": true,
+    "target": "es6",
+    "allowSyntheticDefaultImports": true,
+    "moduleResolution": "node",
+    "noImplicitAny": true,
     "strictPropertyInitialization": false
   },
   "include": ["./**/*.ts", "test/**/*.ts"]
