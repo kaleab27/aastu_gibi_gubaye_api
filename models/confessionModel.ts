@@ -6,10 +6,10 @@ export class Confession {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({name: 'name'})
+  @Column({name: 'name', type: 'varchar'})
   name!: string;
 
-  @Column({name: 'phone'})
+  @Column({name: 'phone', type: 'varchar'})
   phoneNumber!: string;
 
   @OneToMany(() => Student, student => student.confession)

@@ -19,22 +19,22 @@ export class Student {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({name: 'first_name'})
+  @Column({name: 'first_name', type: 'varchar'})
   first_name!: string;
 
-  @Column({name: 'last_name'})
+  @Column({name: 'last_name', type: 'varchar'})
   last_name!: string;
 
-  @Column({name: 'student_id'})
+  @Column({name: 'student_id', type: 'varchar'})
   student_id!: string;
 
-  @Column({name: 'gender'})
+  @Column({name: 'gender', type: 'varchar'})
   gender!: string;
 
-  @Column({name: 'baptismal_name', nullable: true})
+  @Column({name: 'baptismal_name', type: 'varchar', nullable: true})
   baptismal_name?: string;
 
-  @Column({name: 'phone_number'})
+  @Column({name: 'phone_number', type: 'varchar'})
   phone_number!: string;
 
   @ManyToMany(() => Language, language => language.students)
@@ -45,17 +45,17 @@ export class Student {
   @JoinColumn({name: 'department_id'})
   department!: Department;
 
-  @Column({name: 'email', unique: true, nullable: true})
+  @Column({name: 'email', unique: true, type: 'varchar', nullable: true})
   email?: string;
 
   @ManyToMany(() => Service, service => service.students, {nullable: true})
   // @JoinTable()
   service?: Service[];
 
-  @Column({name: 'role', default: 'std_usr'})
+  @Column({name: 'role', default: 'std_usr', type: 'varchar'})
   role?: string;
 
-  @Column({name: 'current_year', nullable: true})
+  @Column({name: 'current_year', nullable: true, type: 'int'})
   current_year?: number;
 
   @ManyToOne(() => Confession, confession => confession.students, {

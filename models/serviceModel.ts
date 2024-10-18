@@ -6,7 +6,7 @@ export class Service {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({name: 'name'})
+  @Column({name: 'name', type: 'varchar'})
   name!: string;
 
   @ManyToMany(() => Student, student => student.service)
