@@ -1,9 +1,15 @@
-import express from 'express';
+import express, {json} from 'express';
 import {Express} from 'express';
-import userRoute from './routes/userRoute'
+import {deptRouter} from './routes/department.routes';
+import {langRouter} from './routes/language.routes';
+import {studentRouter} from './routes/student.routes';
 
 const app: Express = express();
 
-app.use('/api/user', userRoute);
+app.use(json());
+
+app.use('/api/user', studentRouter);
+app.use('/api/department', deptRouter);
+app.use('/api/language', langRouter);
 
 export default app;
