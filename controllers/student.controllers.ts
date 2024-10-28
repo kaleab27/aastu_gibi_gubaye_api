@@ -3,6 +3,7 @@ import {AppDataSource} from '../data_source';
 import {Student} from '../models/studentModel';
 import {Request, Response} from 'express';
 import {Language} from '../models/languageModel';
+import { start } from 'repl';
 // import {Department} from '../models/departmentModel';
 
 const studentRepo = AppDataSource.getRepository(Student);
@@ -27,9 +28,7 @@ export async function getStudents(req: Request, res: Response) {
 export async function createStudent(req: Request, res: Response) {
   try {
     const reqBody = req.body;
-    console.log(reqBody)
     const student = await studentRepo.save(reqBody);
-    console.log(student)
     res.status(201).json({
       status: 'success',
       data: {
@@ -38,5 +37,33 @@ export async function createStudent(req: Request, res: Response) {
     });
   } catch (err: any) {
     throw new Error(err.message);
+  }
+}
+
+export async function updateStud(req: Request, res: Response) {
+  try {
+    const reqBody = req.body;
+    const studentId = req.params.id;
+
+    const student = await studentRepo.findOne({ where: { id: studentId } });
+
+    if (!student) {
+      return res.status(404).json({
+        status: 'fail',
+        message: 'It can\'t find the student',
+      });
+    }
+    await studentRepo.update(studentId, reqBody);
+
+    const updatedStudent = await studentRepo.findOne({ where: { id: studentId } });
+
+    res.status(200).json({
+      status: 'success',
+      data: {
+        student: updatedStudent,
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ status: 'error', message: err.message });
   }
 }
