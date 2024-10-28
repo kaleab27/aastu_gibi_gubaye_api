@@ -3,11 +3,11 @@ import {AppDataSource} from '../data_source';
 import {Student} from '../models/studentModel';
 import {Request, Response} from 'express';
 import {Language} from '../models/languageModel';
-import {Department} from '../models/departmentModel';
+// import {Department} from '../models/departmentModel';
 
 const studentRepo = AppDataSource.getRepository(Student);
-const deptRepo = AppDataSource.getRepository(Language);
-const langRepo = AppDataSource.getRepository(Department);
+// const deptRepo = AppDataSource.getRepository(Department);
+const langRepo = AppDataSource.getRepository(Language);
 
 export async function getStudents(req: Request, res: Response) {
   try {
@@ -27,7 +27,9 @@ export async function getStudents(req: Request, res: Response) {
 export async function createStudent(req: Request, res: Response) {
   try {
     const reqBody = req.body;
+    console.log(reqBody)
     const student = await studentRepo.save(reqBody);
+    console.log(student)
     res.status(201).json({
       status: 'success',
       data: {

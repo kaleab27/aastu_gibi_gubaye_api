@@ -18,5 +18,7 @@
         }
     },
     "include": ["./**/*.ts"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "exclude": ["dist"]
     }
