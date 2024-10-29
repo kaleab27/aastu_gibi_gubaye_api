@@ -1,8 +1,14 @@
 import { Router } from "express";
-import { confessionController } from "../controllers/confession.controller";
-const {createConfession} = confessionController;
+import { createConfession,getConfession,getAllConfession ,updateConfession } from "../controllers/confession.controller";
+// const {createConfession} = confessionController;
 const router = Router()
 
-router.route('/').post(createConfession)
+router.route('/')
+.post(createConfession)
+.get(getAllConfession)
+
+router.route('/:id')
+.get(getConfession)
+.put(updateConfession)
 
 export const confessionRouter = router;
