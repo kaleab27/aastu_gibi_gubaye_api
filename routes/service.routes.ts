@@ -1,10 +1,15 @@
 import { Router } from "express";
-import {createService} from '../controllers/services.controllers'
+import {createService , updateService , getServices} from '../controllers/services.controllers'
 // const {createService} = serviceController;
 
 const router = Router();
 
-router.route('/').post(createService)
+router.route('/')
+.post(createService)
+.get(getServices)
+
+router.route('/:id')
+.put(updateService)
 
 
 export const serviceRouter = router;
