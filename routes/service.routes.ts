@@ -1,6 +1,6 @@
 import { Router } from "express";
-import {serviceController} from '../controllers/services.controllers'
-const {createService} = serviceController;
+import {createService} from '../controllers/services.controllers'
+// const {createService} = serviceController;
 
 const router = Router();
 

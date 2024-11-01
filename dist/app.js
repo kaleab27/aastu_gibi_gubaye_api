@@ -31,11 +31,15 @@ const cors_1 = __importDefault(require("cors"));
 const department_routes_1 = require("./routes/department.routes");
 const language_routes_1 = require("./routes/language.routes");
 const student_routes_1 = require("./routes/student.routes");
+const service_routes_1 = require("./routes/service.routes");
+const confession_routes_1 = require("./routes/confession.routes");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use((0, express_1.json)());
-app.use('/api/user', student_routes_1.studentRouter);
+app.use('/api/student', student_routes_1.studentRouter);
 app.use('/api/department', department_routes_1.deptRouter);
 app.use('/api/language', language_routes_1.langRouter);
+app.use('/api/service', service_routes_1.serviceRouter);
+app.use('/api/confession', confession_routes_1.confessionRouter);
 exports.default = app;
 //# sourceMappingURL=app.js.map

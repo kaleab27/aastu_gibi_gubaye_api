@@ -1,12 +1,13 @@
 import 'reflect-metadata'
 import { AppDataSource } from '../data_source';
 import { Confession } from '../models/confessionModel';
+import { catchAsync } from '../shared/utils/catchAsync.utils';
+import { customError } from '../shared/utils/customError';
 import { Request , Response } from "express";
 
 const confessionRepo = AppDataSource.getRepository(Confession)
 
-export async function createConfession(req: Request , res:Response) {
-   try{
+export const   createConfession = catchAsync(async(req: Request , res:Response) =>{
      const reqBody = req.body;
      const newConfession = await confessionRepo.save(reqBody)
   res.status(201).json({
@@ -15,13 +16,9 @@ export async function createConfession(req: Request , res:Response) {
         newConfession
     }
   })
-   } catch(err:any){
-    throw new Error(err.message)
-   }
-}
+})
 
-export async function getAllConfession(req: Request , res:Response) {
-   try{
+export const    getAllConfession =  catchAsync(async(req: Request , res:Response)=> {
    const confession = await confessionRepo.find()
    
    res.status(200).json({
@@ -30,26 +27,14 @@ export async function getAllConfession(req: Request , res:Response) {
          confession
       }
    })
+})
 
-   }catch(err:any){
-     res.status(404).json({
-      status:'fail',
-      message:err.message
-     })
-   }
-}
-
-export async function getConfession(req: Request, res: Response) {
-   try{
+export const   getConfession =  catchAsync(async(req: Request, res: Response) => {
     const confessionId = req.params.id
-    
     const confession = await confessionRepo.findOne({where: {id : confessionId}})
    
     if(!confession){
-      res.status(404).json({
-        status:'fail',
-        message:'there is no user in this id'
-      })
+      throw new customError('there is no user in this id' , 404)
     }
   
     res.status(200).json({
@@ -58,21 +43,15 @@ export async function getConfession(req: Request, res: Response) {
       confession
     }
   })
-   }catch(err:any){
-     throw new Error('error occured')
-   }
-  }
+  })
 
-export async function updateConfession(req:Request , res:Response){
- try{ const confessionId = req.params.id
+export const   updateConfession = catchAsync (async(req:Request , res:Response) =>{
+   const confessionId = req.params.id
   const reqBody = req.body
   const confession = await confessionRepo.findOne({where:{id: confessionId}})
 
   if(!confession){
-   res.status(404).json({
-      status:'fail',
-      message:'there is no confession by this id'
-   })
+  throw new customError('there is no confession by this id', 404)
   }
   await confessionRepo.update(confessionId, reqBody)
 
@@ -80,10 +59,4 @@ export async function updateConfession(req:Request , res:Response){
    status:'success',
    message:'confession updated'
   })
-}catch(err:any){
-   res.status(404).json({
-      status:'fail',
-      message:err.message
-   })
-}
-}
+})

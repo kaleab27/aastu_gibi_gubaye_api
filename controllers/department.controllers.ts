@@ -19,6 +19,22 @@ const create = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+export async function getDepartment(req:Request , res:Response) {
+  try{
+   const department = await deptRepo.find()
+
+   res.status(200).json({
+    status:'success',
+    data:{
+      department
+    }
+   })
+  }catch(err:any){
+    throw new Error(`could't get department`)
+  }
+} 
+
 export const departmentControllers = {
   create,
 };
+ 

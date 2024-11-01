@@ -1,6 +1,9 @@
 import 'reflect-metadata';
 import {AppDataSource} from '../data_source';
 import {Student} from '../models/studentModel';
+import {catchAsync} from '../shared/utils/catchAsync.utils'
+import { customError } from '../shared/utils/customError';
+
 import { NextFunction, Request, Response} from 'express';
 import {Language} from '../models/languageModel';
 
@@ -10,23 +13,20 @@ const studentRepo = AppDataSource.getRepository(Student);
 // const deptRepo = AppDataSource.getRepository(Department);
 const langRepo = AppDataSource.getRepository(Language);
 
-export async function getStudents(req: Request, res: Response) {
-  try {
-    const students = await studentRepo.find({
-      relations: ['language', 'service', 'department', 'confession'],
-    });
-    res.status(200).json({
-      status: 'success',
-      data: {
-        students,
-      },
-    });
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
-}
-export async function createStudent(req: Request, res: Response) {
-  try {
+export const getStudents = catchAsync(async (req: Request, res: Response) => {
+  const students = await studentRepo.find({
+    relations: ['language', 'service', 'department', 'confession'],
+  });
+
+  res.status(200).json({
+    status: 'success',
+    data: {
+      students,
+    },
+  });
+});
+
+export const  createStudent =  catchAsync(async(req: Request, res: Response) => {
     const reqBody = req.body;
     const student = await studentRepo.save(reqBody);
     res.status(201).json({
@@ -35,22 +35,15 @@ export async function createStudent(req: Request, res: Response) {
         student,
       },
     });
-  } catch (err: any) {
-    throw new Error(err.message);
-  }
-}
+})
 
-export async function getOneStudent(req: Request, res: Response) {
- try{
+export const    getOneStudent =  catchAsync(async(req: Request, res: Response) => {
   const studentId = req.params.id
   
   const student = await studentRepo.findOne({where: {id : studentId}})
  
   if(!student){
-    res.status(404).json({
-      status:'fail',
-      message:'there is no user in this id'
-    })
+    throw new customError('there is no student in this id' ,404)
   }
 
   res.status(200).json({
@@ -59,21 +52,14 @@ export async function getOneStudent(req: Request, res: Response) {
     student
   }
 })
- }catch(err:any){
-   throw new Error('error occured')
- }
-}
+})
 
-export async function deleteStudent(req:any, res:any ) {
-  try {
+ export const  deleteStudent =catchAsync (async(req:any, res:any )=>  {
     const studentId = req.params.id;
     const student = await studentRepo.findOne({ where: { id: studentId } });
     
     if (!student) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'Student not found',
-      });
+      throw new customError('Student not found' ,404)
     }
     await studentRepo.delete(studentId);
 
@@ -81,28 +67,16 @@ export async function deleteStudent(req:any, res:any ) {
       status: 'success',
       message: 'Student deleted',
     });
+})
 
-  } catch (err: any) {
-    return res.status(500).json({
-      status: 'error',
-      message: 'Student not deleted',
-      error: err.message
-    });
-  }
-}
-
-export async function updateStudent(req:any, res:any) {
-  try {
+export const   updateStudent = catchAsync(async (req:Request, res:Response) => {
     const studentId = req.params.id;
     const reqBody = req.body;
 
     const student = await studentRepo.findOne({ where: { id: studentId } });
 
     if (!student) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'Student not found',
-      });
+      throw new customError('Student not found', 404)
     }
 
     await studentRepo.update(studentId, reqBody);
@@ -113,10 +87,4 @@ export async function updateStudent(req:any, res:any) {
       status: 'success',
       data: updatedStudent,
     });
-  } catch (err: any) {
-    return res.status(500).json({
-      status: 'error',
-      message: err.message,
-    });
-  }
-}
+})

@@ -1,5 +1,7 @@
 import { Request , Response , NextFunction  } from "express";
-const errorHandler = (err:any, req:Request, res:Response, next: NextFunction) => {
+import {customError} from './customError'
+
+export const errorHandler = (err:customError, req:Request, res:Response, next: NextFunction) => {
     const statusCode = err.statusCode || 500; 
     res.status(statusCode).json({
       success: false,
@@ -8,5 +10,4 @@ const errorHandler = (err:any, req:Request, res:Response, next: NextFunction) =>
     });
   };
   
-  module.exports = errorHandler;
   
