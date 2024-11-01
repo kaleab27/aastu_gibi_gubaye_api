@@ -62,9 +62,8 @@ __decorate([
     __metadata("design:type", String)
 ], Student.prototype, "email", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => serviceModel_1.Service, service => service.students, { nullable: true })
-    // @JoinTable()
-    ,
+    (0, typeorm_1.ManyToMany)(() => serviceModel_1.Service, service => service.students, { nullable: true }),
+    (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], Student.prototype, "service", void 0);
 __decorate([

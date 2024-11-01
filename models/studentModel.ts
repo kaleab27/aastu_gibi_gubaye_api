@@ -49,7 +49,7 @@ export class Student {
   email?: string;
 
   @ManyToMany(() => Service, service => service.students, {nullable: true})
-  // @JoinTable()
+  @JoinTable()
   service?: Service[];
 
   @Column({name: 'role', default: 'std_usr', type: 'varchar'})

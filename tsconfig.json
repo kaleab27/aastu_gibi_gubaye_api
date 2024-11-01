@@ -13,10 +13,13 @@
         "outDir": "dist",
         "rootDir": "./",
         "baseUrl": ".",
+        "noImplicitReturns": false,
         "paths": {
             "*": ["node_modules/*", "src/types/*"]
         }
     },
     "include": ["./**/*.ts"],
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
     "exclude": ["dist"]
     }
