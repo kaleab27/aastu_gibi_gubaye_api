@@ -33,7 +33,7 @@ res.status(200).json({
 export const updateLanguage = catchAsync(async (req:Request , res:Response) => {
 const studentId = req.params.id;
 const reqBody = req.body;
-const language = await languageRepo.find({where:{id:studentId}})
+const language = await languageRepo.findOne({where:{id:studentId}})
 
 if(!language){
   throw new customError('there is no language in this id', 404)
@@ -41,7 +41,7 @@ if(!language){
 
 await languageRepo.update(studentId, reqBody)
 
-const updatedLanguage = await languageRepo.find({where:{id:studentId}})
+const updatedLanguage = await languageRepo.findOne({where:{id:studentId}})
 
 return res.status(200).json({
   status:'success',

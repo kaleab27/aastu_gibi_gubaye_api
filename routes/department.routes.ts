@@ -1,12 +1,15 @@
 import {Router} from 'express';
-import {departmentControllers ,getDepartment } from '../controllers/department.controllers';
-import {catchAsync} from '../shared/utils/catchAsync.utils';
-const {create} = departmentControllers;
+import {create ,getDepartment ,updateDepartment} from '../controllers/department.controllers';
+// import {catchAsync} from '../shared/utils/catchAsync.utils';
+
 
 const router = Router();
 
 router.route('/')
-.post(catchAsync(create))
+.post(create)
 .get(getDepartment);
+
+router.route('/:id')
+.put(updateDepartment)
 
 export const deptRouter = router;
