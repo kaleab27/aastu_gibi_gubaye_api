@@ -8,17 +8,18 @@ import { filterUtils, filterOption } from '../shared/utils/filterUtils';
 import { NextFunction, Request, Response} from 'express';
 import {Language} from '../models/languageModel';
 import { Service } from '../models/serviceModel';
+import { ServiceD } from '../domain_entities/service.entity';
+import { LanguageD } from '../domain_entities/language.entity';
 
 // import {Department} from '../models/departmentModel';
 
 const studentRepo = AppDataSource.getRepository(Student);
-// const deptRepo = AppDataSource.getRepository(Department);
-const langRepo = AppDataSource.getRepository(Language);
-const serviceRepo = AppDataSource.getRepository(Service)
+const serviceRepo = AppDataSource.getRepository(Service);
+const languageRepo = AppDataSource.getRepository(Language)
 
 export const getStudents = catchAsync(async (req: Request, res: Response, next:NextFunction) => {
-  const {department, service, language,confession, sort='first_name' , limit = 10 , page=1} = req.query; 
-
+  const {department, service, language,confession, sort= 'first_name', limit = 10 , page=1} = req.query; 
+//
   const queryBuilder = studentRepo.createQueryBuilder('student')
  
   const filters: filterOption = {
@@ -28,9 +29,9 @@ export const getStudents = catchAsync(async (req: Request, res: Response, next:N
     service: typeof service === 'string' ? service : undefined,
     page: Number(page),   
     limit: Number(limit), 
-    sort: typeof sort === 'string' ? sort : 'first_name', 
+    sort: typeof sort === 'string' ? sort :'first_name', 
   };
-
+// 
   filterUtils(queryBuilder,filters)
   
   const students = await queryBuilder
@@ -48,16 +49,42 @@ export const getStudents = catchAsync(async (req: Request, res: Response, next:N
   });
 });
 
-export const  createStudent =  catchAsync(async(req: Request, res: Response ,next:NextFunction) => {
- 
+export const createStudent = catchAsync(async (req: Request, res: Response) => {
+  const reqBody = req.body;
+  const serviceIds: string[] = req.body.service ?? [];
+  const languageIds: string[] = req.body.language ?? [];
+  const services: ServiceD[] = [];
+  const languages: LanguageD[] = [];
 
-    res.status(201).json({
-      status: 'success',
-      data: {
-        student,
-      },
-    });
+  serviceIds.forEach(async id => {
+    const service = await serviceRepo.findOneBy({id});
+
+    if (service) {
+      services.push(service);
+    }
+  });
+languageIds.forEach(async id => {
+  const language = await languageRepo.findOneBy({id})
+
+  if(language){
+    languages.push(language)
+  }
 })
+  const student: Student = await studentRepo.save(reqBody);
+
+  student.service = services;
+  student.language = languages;
+
+  const s = await studentRepo.save(student);
+
+  res.status(201).json({
+    status: 'success',
+    data: {
+      student: s,
+    },
+  });
+});
+
 
 export const    getOneStudent =  catchAsync(async(req: Request, res: Response , next:NextFunction) => {
   const studentId = req.params.id

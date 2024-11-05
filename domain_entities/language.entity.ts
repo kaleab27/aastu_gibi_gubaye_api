@@ -1,9 +1,9 @@
 import {StudentD} from './student.entity';
 
 export class LanguageD {
-  public id?: string;
+  public id!: string;
   constructor(
-    public language: string,
-    public students?: StudentD[]
+    public name: string,
+    // public students?: StudentD[]
   ) {}
 }
