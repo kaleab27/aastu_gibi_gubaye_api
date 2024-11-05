@@ -1,7 +1,7 @@
 import 'reflect-metadata';
-import { Request, Response } from 'express';
-export declare function getStudents(req: Request, res: Response): Promise<void>;
-export declare function createStudent(req: Request, res: Response): Promise<void>;
-export declare function getOneStudent(req: Request, res: Response): Promise<void>;
-export declare function deleteStudent(req: any, res: any): Promise<any>;
-export declare function updateStudent(req: any, res: any): Promise<any>;
+import { NextFunction, Request, Response } from 'express';
+export declare const getStudents: (req: Request, res: Response, next: NextFunction) => void;
+export declare const createStudent: (req: Request, res: Response, next: NextFunction) => void;
+export declare const getOneStudent: (req: Request, res: Response, next: NextFunction) => void;
+export declare const deleteStudent: (req: Request, res: Response, next: NextFunction) => void;
+export declare const updateStudent: (req: Request, res: Response, next: NextFunction) => void;

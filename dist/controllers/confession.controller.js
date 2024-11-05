@@ -9,97 +9,56 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createConfession = createConfession;
-exports.getAllConfession = getAllConfession;
-exports.getConfession = getConfession;
-exports.updateConfession = updateConfession;
+exports.updateConfession = exports.getConfession = exports.getAllConfession = exports.createConfession = void 0;
 require("reflect-metadata");
 const data_source_1 = require("../data_source");
 const confessionModel_1 = require("../models/confessionModel");
+const catchAsync_utils_1 = require("../shared/utils/catchAsync.utils");
+const customError_1 = require("../shared/utils/customError");
 const confessionRepo = data_source_1.AppDataSource.getRepository(confessionModel_1.Confession);
-function createConfession(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const reqBody = req.body;
-            const newConfession = yield confessionRepo.save(reqBody);
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    newConfession
-                }
-            });
-        }
-        catch (err) {
-            throw new Error(err.message);
+exports.createConfession = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const reqBody = req.body;
+    const newConfession = yield confessionRepo.save(reqBody);
+    res.status(201).json({
+        status: 'success',
+        data: {
+            newConfession
         }
     });
-}
-function getAllConfession(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const confession = yield confessionRepo.find();
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    confession
-                }
-            });
-        }
-        catch (err) {
-            res.status(404).json({
-                status: 'fail',
-                message: err.message
-            });
+}));
+exports.getAllConfession = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const confession = yield confessionRepo.find();
+    res.status(200).json({
+        status: 'success',
+        data: {
+            confession
         }
     });
-}
-function getConfession(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const confessionId = req.params.id;
-            const confession = yield confessionRepo.findOne({ where: { id: confessionId } });
-            if (!confession) {
-                res.status(404).json({
-                    status: 'fail',
-                    message: 'there is no user in this id'
-                });
-            }
-            res.status(200).json({
-                status: 'success',
-                data: {
-                    confession
-                }
-            });
-        }
-        catch (err) {
-            throw new Error('error occured');
+}));
+exports.getConfession = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const confessionId = req.params.id;
+    const confession = yield confessionRepo.findOne({ where: { id: confessionId } });
+    if (!confession) {
+        throw new customError_1.customError('there is no user in this id', 404);
+    }
+    res.status(200).json({
+        status: 'success',
+        data: {
+            confession
         }
     });
-}
-function updateConfession(req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const confessionId = req.params.id;
-            const reqBody = req.body;
-            const confession = yield confessionRepo.findOne({ where: { id: confessionId } });
-            if (!confession) {
-                res.status(404).json({
-                    status: 'fail',
-                    message: 'there is no confession by this id'
-                });
-            }
-            yield confessionRepo.update(confessionId, reqBody);
-            res.status(200).json({
-                status: 'success',
-                message: 'confession updated'
-            });
-        }
-        catch (err) {
-            res.status(404).json({
-                status: 'fail',
-                message: err.message
-            });
-        }
+}));
+exports.updateConfession = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const confessionId = req.params.id;
+    const reqBody = req.body;
+    const confession = yield confessionRepo.findOne({ where: { id: confessionId } });
+    if (!confession) {
+        throw new customError_1.customError('there is no confession by this id', 404);
+    }
+    yield confessionRepo.update(confessionId, reqBody);
+    res.status(200).json({
+        status: 'success',
+        message: 'confession updated'
     });
-}
+}));
 //# sourceMappingURL=confession.controller.js.map
