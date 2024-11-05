@@ -9,29 +9,46 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.serviceController = void 0;
+exports.updateService = exports.getServices = exports.createService = void 0;
 require("reflect-metadata");
 const data_source_1 = require("../data_source");
 const serviceModel_1 = require("../models/serviceModel");
+const catchAsync_utils_1 = require("../shared/utils/catchAsync.utils");
+const customError_1 = require("../shared/utils/customError");
 const serviceRepo = data_source_1.AppDataSource.getRepository(serviceModel_1.Service);
-const createService = function (req, res) {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            const reqBody = req.body;
-            const service = yield serviceRepo.save(reqBody);
-            res.status(201).json({
-                status: 'success',
-                data: {
-                    service
-                }
-            });
-        }
-        catch (err) {
-            throw new Error(err.message);
+exports.createService = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const reqBody = req.body;
+    const service = yield serviceRepo.save(reqBody);
+    res.status(201).json({
+        status: 'success',
+        data: {
+            service
         }
     });
-};
-exports.serviceController = {
-    createService
-};
+}));
+exports.getServices = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const services = yield serviceRepo.find();
+    res.status(200).json({
+        status: 'success',
+        data: [
+            services
+        ]
+    });
+}));
+exports.updateService = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const serviceId = req.params.id;
+    const reqBody = req.body;
+    const service = yield serviceRepo.findOne({ where: { id: serviceId } });
+    if (!service) {
+        throw new customError_1.customError('there is no service in this id', 404);
+    }
+    yield serviceRepo.update(serviceId, reqBody);
+    const updatedService = yield serviceRepo.findOne({ where: { id: serviceId } });
+    res.status(200).json({
+        status: 'success',
+        data: {
+            updatedService
+        }
+    });
+}));
 //# sourceMappingURL=services.controllers.js.map
