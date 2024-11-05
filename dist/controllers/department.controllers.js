@@ -9,25 +9,44 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.departmentControllers = void 0;
+exports.updateDepartment = exports.getDepartment = exports.create = void 0;
 const data_source_1 = require("../data_source");
 const departmentModel_1 = require("../models/departmentModel");
+const customError_1 = require("../shared/utils/customError");
+const catchAsync_utils_1 = require("../shared/utils/catchAsync.utils");
 const deptRepo = data_source_1.AppDataSource.getRepository(departmentModel_1.Department);
-const create = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+exports.create = (0, catchAsync_utils_1.catchAsync)((req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const newDept = yield deptRepo.save(req.body);
-    if (newDept) {
-        res.status(201).json({
-            status: 'success',
-            data: {
-                department: newDept,
-            },
-        });
+    res.status(201).json({
+        status: 'success',
+        data: {
+            department: newDept,
+        },
+    });
+}));
+exports.getDepartment = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const department = yield deptRepo.find();
+    res.status(200).json({
+        status: 'success',
+        data: {
+            department
+        }
+    });
+}));
+exports.updateDepartment = (0, catchAsync_utils_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const studentId = req.params.id;
+    const reqBody = req.body;
+    const department = yield deptRepo.findOne({ where: { id: studentId } });
+    if (!department) {
+        throw new customError_1.customError('there is no department in this id', 404);
     }
-    else {
-        next("Couldn't add department");
-    }
-});
-exports.departmentControllers = {
-    create,
-};
+    yield deptRepo.update(studentId, reqBody);
+    const updatedDep = yield deptRepo.findOne({ where: { id: studentId } });
+    return res.status(200).json({
+        status: 'success',
+        data: {
+            updatedDep
+        }
+    });
+}));
 //# sourceMappingURL=department.controllers.js.map

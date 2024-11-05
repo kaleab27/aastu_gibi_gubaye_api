@@ -1,5 +1,5 @@
 import 'reflect-metadata';
-import { Request, Response } from 'express';
-export declare const serviceController: {
-    createService: (req: Request, res: Response) => Promise<void>;
-};
+import { Request, Response, NextFunction } from 'express';
+export declare const createService: (req: Request, res: Response, next: NextFunction) => void;
+export declare const getServices: (req: Request, res: Response, next: NextFunction) => void;
+export declare const updateService: (req: Request, res: Response, next: NextFunction) => void;

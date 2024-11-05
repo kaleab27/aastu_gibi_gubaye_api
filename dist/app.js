@@ -33,6 +33,7 @@ const language_routes_1 = require("./routes/language.routes");
 const student_routes_1 = require("./routes/student.routes");
 const service_routes_1 = require("./routes/service.routes");
 const confession_routes_1 = require("./routes/confession.routes");
+const errorHandler_1 = require("./shared/utils/errorHandler");
 const app = (0, express_1.default)();
 app.use((0, cors_1.default)());
 app.use((0, express_1.json)());
@@ -41,5 +42,6 @@ app.use('/api/department', department_routes_1.deptRouter);
 app.use('/api/language', language_routes_1.langRouter);
 app.use('/api/service', service_routes_1.serviceRouter);
 app.use('/api/confession', confession_routes_1.confessionRouter);
+app.use(errorHandler_1.errorHandler);
 exports.default = app;
 //# sourceMappingURL=app.js.map
