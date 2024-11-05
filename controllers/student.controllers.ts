@@ -1,6 +1,7 @@
 import 'reflect-metadata';
 import {AppDataSource} from '../data_source';
 import {Student} from '../models/studentModel';
+
 import { createQueryBuilder } from 'typeorm';
 import {catchAsync} from '../shared/utils/catchAsync.utils'
 import { customError } from '../shared/utils/customError';
@@ -85,7 +86,6 @@ languageIds.forEach(async id => {
   });
 });
 
-
 export const    getOneStudent =  catchAsync(async(req: Request, res: Response , next:NextFunction) => {
   const studentId = req.params.id
   
@@ -96,44 +96,43 @@ export const    getOneStudent =  catchAsync(async(req: Request, res: Response , 
   }
 
   res.status(200).json({
-  status:'success',
-  data:{
-    student
+    status: 'success',
+    data: {
+      student,
+    },
+  });
+});
+
+export const deleteStudent = catchAsync(async (req: any, res: any) => {
+  const studentId = req.params.id;
+  const student = await studentRepo.findOne({where: {id: studentId}});
+
+  if (!student) {
+    throw new customError('Student not found', 404);
   }
-})
-})
+  await studentRepo.delete(studentId);
 
- export const  deleteStudent =catchAsync (async(req:any, res:any )=>  {
-    const studentId = req.params.id;
-    const student = await studentRepo.findOne({ where: { id: studentId } });
-    
-    if (!student) {
-      throw new customError('Student not found' ,404)
-    }
-    await studentRepo.delete(studentId);
+  return res.status(200).json({
+    status: 'success',
+    message: 'Student deleted',
+  });
+});
 
-    return res.status(200).json({
-      status: 'success',
-      message: 'Student deleted',
-    });
-})
 
 export const   updateStudent = catchAsync(async (req:Request, res:Response ,next:NextFunction) => {
     const studentId = req.params.id;
     const reqBody = req.body;
+    const student = await studentRepo.findOne({where: {id: studentId}});
+  if (!student) {
+    throw new customError('Student not found', 404);
+  }
 
-    const student = await studentRepo.findOne({ where: { id: studentId } });
+  await studentRepo.update(studentId, reqBody);
 
-    if (!student) {
-      throw new customError('Student not found', 404)
-    }
+  const updatedStudent = await studentRepo.findOne({where: {id: studentId}});
 
-    await studentRepo.update(studentId, reqBody);
-
-    const updatedStudent = await studentRepo.findOne({ where: { id: studentId } });
-
-    return res.status(200).json({
-      status: 'success',
-      data: updatedStudent,
-    });
-})
+  return res.status(200).json({
+    status: 'success',
+    data: updatedStudent,
+  });
+});
