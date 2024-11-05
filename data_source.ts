@@ -8,7 +8,7 @@ export const AppDataSource = new DataSource({
   // driver: sqlite,
   // flags: 0x00000040,
   // database: envs.tursoUrl,
-  database:'getbigubye.db',
+  database:'gebigubye.db',
   entities:
     process.env.NODE_ENV === 'production'
       ? ['./dist/models/**/*.js']

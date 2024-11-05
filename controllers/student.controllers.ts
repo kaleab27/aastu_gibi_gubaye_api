@@ -1,26 +1,46 @@
 import 'reflect-metadata';
 import {AppDataSource} from '../data_source';
 import {Student} from '../models/studentModel';
-import {catchAsync} from '../shared/utils/catchAsync.utils';
-import {customError} from '../shared/utils/customError';
 
-import {NextFunction, Request, Response} from 'express';
+import { createQueryBuilder } from 'typeorm';
+import {catchAsync} from '../shared/utils/catchAsync.utils'
+import { customError } from '../shared/utils/customError';
+import { filterUtils, filterOption } from '../shared/utils/filterUtils';
+import { NextFunction, Request, Response} from 'express';
 import {Language} from '../models/languageModel';
-import {ServiceD} from '../domain_entities/service.entity';
-import {Service} from '../models/serviceModel';
+import { Service } from '../models/serviceModel';
+import { ServiceD } from '../domain_entities/service.entity';
+import { LanguageD } from '../domain_entities/language.entity';
 
 // import {Department} from '../models/departmentModel';
 
 const studentRepo = AppDataSource.getRepository(Student);
 const serviceRepo = AppDataSource.getRepository(Service);
+const languageRepo = AppDataSource.getRepository(Language)
 
-// const deptRepo = AppDataSource.getRepository(Department);
-const langRepo = AppDataSource.getRepository(Language);
-
-export const getStudents = catchAsync(async (req: Request, res: Response) => {
-  const students = await studentRepo.find({
-    relations: ['language', 'service', 'department', 'confession'],
-  });
+export const getStudents = catchAsync(async (req: Request, res: Response, next:NextFunction) => {
+  const {department, service, language,confession, sort= 'first_name', limit = 10 , page=1} = req.query; 
+//
+  const queryBuilder = studentRepo.createQueryBuilder('student')
+ 
+  const filters: filterOption = {
+    department: typeof department === 'string' ? department : undefined,
+    confession: typeof confession === 'string' ? confession : undefined,
+    language: typeof language === 'string' ? language : undefined,
+    service: typeof service === 'string' ? service : undefined,
+    page: Number(page),   
+    limit: Number(limit), 
+    sort: typeof sort === 'string' ? sort :'first_name', 
+  };
+// 
+  filterUtils(queryBuilder,filters)
+  
+  const students = await queryBuilder
+  .leftJoinAndSelect('student.department', 'department')
+  .leftJoinAndSelect('student.service', 'service')
+  .leftJoinAndSelect('student.language', 'language')
+  .leftJoinAndSelect('student.confession', 'confession')
+  .getMany();
 
   res.status(200).json({
     status: 'success',
@@ -33,7 +53,9 @@ export const getStudents = catchAsync(async (req: Request, res: Response) => {
 export const createStudent = catchAsync(async (req: Request, res: Response) => {
   const reqBody = req.body;
   const serviceIds: string[] = req.body.service ?? [];
+  const languageIds: string[] = req.body.language ?? [];
   const services: ServiceD[] = [];
+  const languages: LanguageD[] = [];
 
   serviceIds.forEach(async id => {
     const service = await serviceRepo.findOneBy({id});
@@ -42,10 +64,17 @@ export const createStudent = catchAsync(async (req: Request, res: Response) => {
       services.push(service);
     }
   });
+languageIds.forEach(async id => {
+  const language = await languageRepo.findOneBy({id})
 
+  if(language){
+    languages.push(language)
+  }
+})
   const student: Student = await studentRepo.save(reqBody);
 
   student.service = services;
+  student.language = languages;
 
   const s = await studentRepo.save(student);
 
@@ -57,13 +86,13 @@ export const createStudent = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-export const getOneStudent = catchAsync(async (req: Request, res: Response) => {
-  const studentId = req.params.id;
-
-  const student = await studentRepo.findOne({where: {id: studentId}});
-
-  if (!student) {
-    throw new customError('there is no student in this id', 404);
+export const    getOneStudent =  catchAsync(async(req: Request, res: Response , next:NextFunction) => {
+  const studentId = req.params.id
+  
+  const student = await studentRepo.findOne({where: {id : studentId}})
+ 
+  if(!student){
+    throw new customError('there is no student in this id' ,404)
   }
 
   res.status(200).json({
@@ -89,12 +118,11 @@ export const deleteStudent = catchAsync(async (req: any, res: any) => {
   });
 });
 
-export const updateStudent = catchAsync(async (req: Request, res: Response) => {
-  const studentId = req.params.id;
-  const reqBody = req.body;
 
-  const student = await studentRepo.findOne({where: {id: studentId}});
-
+export const   updateStudent = catchAsync(async (req:Request, res:Response ,next:NextFunction) => {
+    const studentId = req.params.id;
+    const reqBody = req.body;
+    const student = await studentRepo.findOne({where: {id: studentId}});
   if (!student) {
     throw new customError('Student not found', 404);
   }
