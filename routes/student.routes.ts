@@ -1,18 +1,18 @@
 import {Router} from 'express';
 import {createStudent,deleteStudent, getStudents , getOneStudent, updateStudent} from '../controllers/student.controller';
-import { authenticateJWT } from '../middlewares/auth.middleware';
+import { authenticateJWT ,authorizeAdmin } from '../middlewares/auth.middleware';
 import { LogIn } from '../controllers/login.controller';
 
 const router = Router();
 
 router.route('/')
-.get(authenticateJWT, getStudents)
-.post(createStudent);
-
+.get( getStudents)
+.post(authenticateJWT,createStudent);
+// 
 router.route('/:id')
 .get(getOneStudent)
 .delete(deleteStudent)
-.put(updateStudent)
+.put( authenticateJWT,authorizeAdmin, updateStudent)
 
 router.route('/login')
 .post(LogIn)

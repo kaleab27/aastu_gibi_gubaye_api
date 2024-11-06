@@ -52,6 +52,7 @@ export const getStudents = catchAsync(async (req: Request, res: Response, next:N
 });
 
 export const createStudent = catchAsync(async (req: Request, res: Response) => {
+
   const reqBody = req.body;
   const password = req.body.password;
   const serviceIds: string[] = req.body.service ?? [];
