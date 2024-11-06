@@ -11,6 +11,7 @@ import {Language} from '../models/languageModel';
 import { Service } from '../models/serviceModel';
 import { ServiceD } from '../domain_entities/service.entity';
 import { LanguageD } from '../domain_entities/language.entity';
+import { hashPassword} from './auth.controller';
 
 // import {Department} from '../models/departmentModel';
 
@@ -52,12 +53,13 @@ export const getStudents = catchAsync(async (req: Request, res: Response, next:N
 
 export const createStudent = catchAsync(async (req: Request, res: Response) => {
   const reqBody = req.body;
+  const password = req.body.password;
   const serviceIds: string[] = req.body.service ?? [];
   const languageIds: string[] = req.body.language ?? [];
   const services: ServiceD[] = [];
   const languages: LanguageD[] = [];
 
-  serviceIds.forEach(async id => {
+ serviceIds.forEach(async id => {
     const service = await serviceRepo.findOneBy({id});
 
     if (service) {
@@ -71,7 +73,10 @@ languageIds.forEach(async id => {
     languages.push(language)
   }
 })
-  const student: Student = await studentRepo.save(reqBody);
+
+const hashedPassword =await hashPassword(password)
+
+  const student: Student = await studentRepo.save({...reqBody, password: hashedPassword});
 
   student.service = services;
   student.language = languages;

@@ -1,11 +1,12 @@
 import {Router} from 'express';
-import {createStudent,deleteStudent, getStudents , getOneStudent, updateStudent} from '../controllers/student.controllers';
-
+import {createStudent,deleteStudent, getStudents , getOneStudent, updateStudent} from '../controllers/student.controller';
+import { authenticateJWT } from '../middlewares/auth.middleware';
+import { LogIn } from '../controllers/login.controller';
 
 const router = Router();
 
 router.route('/')
-.get(getStudents)
+.get(authenticateJWT, getStudents)
 .post(createStudent);
 
 router.route('/:id')
@@ -13,5 +14,7 @@ router.route('/:id')
 .delete(deleteStudent)
 .put(updateStudent)
 
+router.route('/login')
+.post(LogIn)
 
 export const studentRouter = router;

@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {create ,getDepartment ,updateDepartment} from '../controllers/department.controllers';
+import {create ,getDepartment ,updateDepartment} from '../controllers/department.controller';
 // import {catchAsync} from '../shared/utils/catchAsync.utils';
 
 
