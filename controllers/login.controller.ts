@@ -25,6 +25,15 @@ export const LogIn = catchAsync(async (req: Request , res:Response) => {
   return res.status(400).json({ message: 'Invalid credentials' });
   }
   const token = generateToken(student.id)
+
+ res.cookie('token' , token ,{
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'strict',
+  maxAge: 60 * 60 * 1000,
+ })
+
+ 
   res.status(200).json({
     status:'success',
     token

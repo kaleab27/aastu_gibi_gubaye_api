@@ -1,4 +1,5 @@
 import express, {json} from 'express';
+import cookieParse from 'cookie-parser'
 import cors from 'cors';
 import {Express} from 'express';
 import {deptRouter} from './routes/department.routes';
@@ -10,6 +11,7 @@ import {errorHandler} from './shared/utils/errorHandler'
 
 const app: Express = express();
 
+app.use(cookieParse())
 app.use(cors());
 app.use(json());
 

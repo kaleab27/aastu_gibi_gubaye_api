@@ -6,12 +6,12 @@ import { AppDataSource } from '../data_source';
 const studentRepo = AppDataSource.getRepository(Student)
 
 export const authenticateJWT = async (req: any, res:any , next:NextFunction) => {
-  const token = req.header('Authorization')?.split(' ')[1]; 
+  // const token = req.header('Authorization')?.split(' ')[1]; 
+  const token = req.cookies.token;
 
   if (!token) {
     return res.status(403).json({ message: 'Access denied. No token provided.' });
   }
- 
   const decoded = verifyToken(token); 
 
   if (!decoded) {
