@@ -12,6 +12,7 @@
         "sourceMap": true,
         "outDir": "dist",
         "rootDir": "./",
+        "typeRoots": ["@types", "node_modules/@types"],
         "baseUrl": ".",
         "noImplicitReturns": false,
         "paths": {

@@ -37,6 +37,9 @@ export class Student {
   @Column({name: 'phone_number', type: 'varchar'})
   phone_number!: string;
 
+  @Column({name: 'password', nullable: true })
+  password?: string;
+
   @ManyToMany(() => Language, language => language.students)
   @JoinTable()
   language!: Language[];

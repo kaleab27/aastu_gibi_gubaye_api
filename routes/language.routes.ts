@@ -1,5 +1,5 @@
 import {Router} from 'express';
-import {create, getLanguage , updateLanguage} from '../controllers/language.controllers';
+import {create, getLanguage , updateLanguage} from '../controllers/language.controller';
 import {catchAsync} from '../shared/utils/catchAsync.utils';
 // const {create} = languageControllers;
 
