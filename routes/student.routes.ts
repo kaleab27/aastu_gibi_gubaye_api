@@ -6,13 +6,13 @@ import { LogIn } from '../controllers/login.controller';
 const router = Router();
 
 router.route('/')
-.get( getStudents)
-.post(authenticateJWT,createStudent);
-// 
+.get(authenticateJWT, authorizeAdmin, getStudents)
+.post(authenticateJWT, authorizeAdmin,createStudent);
+
 router.route('/:id')
 .get(getOneStudent)
-.delete(deleteStudent)
-.put( authenticateJWT,authorizeAdmin, updateStudent)
+.delete(authenticateJWT, authorizeAdmin, deleteStudent)
+.put(authenticateJWT, authorizeAdmin, updateStudent)
 
 router.route('/login')
 .post(LogIn)

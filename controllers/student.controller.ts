@@ -95,7 +95,9 @@ const hashedPassword =await hashPassword(password)
 export const    getOneStudent =  catchAsync(async(req: Request, res: Response , next:NextFunction) => {
   const studentId = req.params.id
   
-  const student = await studentRepo.findOne({where: {id : studentId}})
+  const student = await studentRepo.findOne({where: {id : studentId},
+    relations: ['confession' , 'department' ,'language','service']
+  })
  
   if(!student){
     throw new customError('there is no student in this id' ,404)
@@ -128,7 +130,9 @@ export const deleteStudent = catchAsync(async (req: any, res: any) => {
 export const   updateStudent = catchAsync(async (req:Request, res:Response ,next:NextFunction) => {
     const studentId = req.params.id;
     const reqBody = req.body;
-    const student = await studentRepo.findOne({where: {id: studentId}});
+    const student = await studentRepo.findOne({where: {id: studentId} ,
+    relations:['department','language','confession','service']
+    });
   if (!student) {
     throw new customError('Student not found', 404);
   }
