@@ -1,26 +1,27 @@
 {
   "extends": "./node_modules/gts/tsconfig-google.json",
-    "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "allowSyntheticDefaultImports": true,
-        "target": "es6",
-        "experimentalDecorators": true,
-        "emitDecoratorMetadata": true,
-        "noImplicitAny": true,
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist",
-        "rootDir": "./",
-        "typeRoots": ["@types", "node_modules/@types"],
-        "baseUrl": ".",
-        "noImplicitReturns": false,
-        "paths": {
-            "*": ["node_modules/*", "src/types/*"]
-        }
-    },
-    "include": ["./**/*.ts"],
-    "emitDecoratorMetadata": true,
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "target": "es6",
     "experimentalDecorators": true,
-    "exclude": ["dist"]
-    }
+    "emitDecoratorMetadata": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "rootDir": "./",
+    "typeRoots": ["@types", "node_modules/@types"],
+    "baseUrl": ".",
+    "noImplicitReturns": false,
+    "paths": {
+      "*": ["node_modules/*", "src/types/*"]
+    },
+    // "types": ["./types/custom.d.ts"]
+  },
+  "include": ["./**/*.ts"],
+  "emitDecoratorMetadata": true,
+  "experimentalDecorators": true,
+  "exclude": ["dist"]
+}

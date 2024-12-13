@@ -25,7 +25,7 @@ export class Student {
   @Column({name: 'last_name', type: 'varchar'})
   last_name!: string;
 
-  @Column({name: 'student_id', type: 'varchar'})
+  @Column({name: 'student_id', unique: true, type: 'varchar'})
   student_id!: string;
 
   @Column({name: 'gender', type: 'varchar'})
@@ -37,7 +37,7 @@ export class Student {
   @Column({name: 'phone_number', type: 'varchar'})
   phone_number!: string;
 
-  @Column({name: 'password', nullable: true })
+  @Column({name: 'password', nullable: true})
   password?: string;
 
   @ManyToMany(() => Language, language => language.students)
@@ -51,7 +51,7 @@ export class Student {
   @Column({name: 'email', unique: true, type: 'varchar', nullable: true})
   email?: string;
 
-  @ManyToMany(() => Service, service => service.students,{ cascade: true })
+  @ManyToMany(() => Service, service => service.students, {cascade: true})
   @JoinTable()
   service?: Service[];
 
