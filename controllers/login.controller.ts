@@ -1,32 +1,33 @@
-import { catchAsync } from "../shared/utils/catchAsync.utils";
-import { AppDataSource } from "../data_source";
-import { Request , Response, NextFunction } from "express";
-import { hashPassword, comparePassword, generateToken } from './auth.controller';
-import { Student } from "../models/studentModel";
-import { customError } from "../shared/utils/customError";
+import {catchAsync} from '../shared/utils/catchAsync.utils';
+import {AppDataSource} from '../data_source';
+import {Request, Response, NextFunction} from 'express';
+import {hashPassword, comparePassword, generateToken} from './auth.controller';
+import {Student} from '../models/studentModel';
+import {customError} from '../shared/utils/customError';
 
+const studentRepo = AppDataSource.getRepository(Student);
 
-const studentRepo = AppDataSource.getRepository(Student)
+export const LogIn = catchAsync(async (req: Request, res: Response) => {
+  const {studentId, password} = req.body;
 
-export const LogIn = catchAsync(async (req: Request , res:Response) => {
-  const {studentId , password} = req.body
- 
-   const student = await studentRepo.findOne({where: {student_id: studentId}})
+  const student = await studentRepo.findOne({where: {student_id: studentId}});
 
-   if(!student){
-    throw new customError('there is no user in this id', 400)
-   }
-   if (!student.password) {
-    return res.status(400).json({ message: 'Password is not available for this user.' });
+  if (!student) {
+    throw new customError('there is no user in this id', 400);
   }
-   const isMatch = await comparePassword(password , student.password)
+  if (!student.password) {
+    return res
+      .status(400)
+      .json({message: 'Password is not available for this user.'});
+  }
+  const isMatch = await comparePassword(password, student.password);
 
   if (!isMatch) {
-  return res.status(400).json({ message: 'Invalid credentials' });
+    return res.status(400).json({message: 'Invalid credentials'});
   }
-  const token = generateToken(student.id)
+  const token = generateToken(student.id);
   res.status(200).json({
-    status:'success',
-    token
-  })
-}) 
+    status: 'success',
+    token,
+  });
+});

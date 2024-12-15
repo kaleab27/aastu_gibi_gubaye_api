@@ -1,14 +1,15 @@
-import { Router } from "express";
-import { createConfession,getConfession,getAllConfession ,updateConfession } from "../controllers/confession.controller";
+import {Router} from 'express';
+import {
+  createConfession,
+  getConfession,
+  getAllConfession,
+  updateConfession,
+} from '../controllers/confession.controller';
 // const {createConfession} = confessionController;
-const router = Router()
+const router = Router();
 
-router.route('/')
-.post(createConfession)
-.get(getAllConfession)
+router.route('/').post(createConfession).get(getAllConfession);
 
-router.route('/:id')
-.get(getConfession)
-.put(updateConfession)
+router.route('/:id').get(getConfession).put(updateConfession);
 
 export const confessionRouter = router;
