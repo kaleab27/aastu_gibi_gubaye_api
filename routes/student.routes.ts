@@ -15,17 +15,16 @@ import {LogIn} from '../controllers/login.controller';
 
 const router = Router();
 
-//authenticateJWT, authorizeAdmin, AddAdminAndSuperAdmin, for create student
-//authenticateJWT, authorizeAdmin, get all student
-//authenticateJWT, authorizeAdmin, delete student
-// authenticateJWT, authorizeAdmin, update student
-router.route('/').get(getStudents).post(createStudent);
+router
+  .route('/')
+  .get(authenticateJWT, authorizeAdmin, getStudents)
+  .post(authenticateJWT, authorizeAdmin, AddAdminAndSuperAdmin, createStudent);
 
 router
   .route('/:id')
   .get(getOneStudent)
-  .delete(deleteStudent)
-  .put(updateStudent);
+  .delete(authenticateJWT, authorizeAdmin, deleteStudent)
+  .put(authenticateJWT, authorizeAdmin, updateStudent);
 
 router.route('/login').post(LogIn);
 
