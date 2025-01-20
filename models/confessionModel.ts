@@ -6,8 +6,11 @@ export class Confession {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({name: 'name', type: 'varchar'})
-  name!: string;
+  @Column({name: 'first_name', type: 'varchar'})
+  first_name!: string;
+
+  @Column({name: 'last_name', type: 'varchar'})
+  last_name!: string;
 
   @Column({name: 'phone', type: 'varchar'})
   phoneNumber!: string;

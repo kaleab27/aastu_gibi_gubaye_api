@@ -25,7 +25,9 @@ export const LogIn = catchAsync(async (req: Request, res: Response) => {
   if (!isMatch) {
     return res.status(400).json({message: 'Invalid credentials'});
   }
+
   const token = generateToken(student.id);
+
   res.status(200).json({
     status: 'success',
     token,

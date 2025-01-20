@@ -68,3 +68,20 @@ export const updateConfession = catchAsync(
     });
   }
 );
+
+export const deleteConfession = catchAsync(
+  async (req: Request, res: Response) => {
+    const confessionId = req.params.id;
+
+    if (!confessionId) {
+      throw new customError('Student not found', 404);
+    }
+
+    await confessionRepo.delete(confessionId);
+
+    res.status(200).json({
+      status: 'success',
+      message: 'confession father deleted',
+    });
+  }
+);
