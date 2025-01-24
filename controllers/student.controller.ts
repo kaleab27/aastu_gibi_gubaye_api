@@ -14,8 +14,6 @@ import {LanguageD} from '../domain_entities/language.entity';
 import {hashPassword} from './auth.controller';
 import {boolean, object, promise} from 'zod';
 
-// import {Department} from '../models/departmentModel';
-
 const studentRepo = AppDataSource.getRepository(Student);
 const serviceRepo = AppDataSource.getRepository(Service);
 const languageRepo = AppDataSource.getRepository(Language);
@@ -160,7 +158,7 @@ export const updateStudent = catchAsync(
     }
 
     Object.assign(student, otherFields);
-
+    ////to update the language and service
     if (
       reqBody.language !== null &&
       reqBody.language !== undefined &&
