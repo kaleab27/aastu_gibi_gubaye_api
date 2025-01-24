@@ -5,6 +5,7 @@ import {Service} from '../models/serviceModel';
 import {Department} from '../models/departmentModel';
 import {LanguageD} from '../domain_entities/language.entity';
 import {Language} from '../models/languageModel';
+import {Request} from 'express';
 
 // declare global {
 //   namespace Express {
@@ -43,10 +44,7 @@ export interface studentReq extends Request {
     password?: string;
     service?: Service[];
     role?: string;
-    current_year?: number;
+    current_year?: string;
     confession?: Confession;
-  };
-  header?: {
-    Authorization?: string;
   };
 }

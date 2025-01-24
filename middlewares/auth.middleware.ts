@@ -7,20 +7,22 @@ import {studentReq} from '../types/custom';
 const studentRepo = AppDataSource.getRepository(Student);
 
 export const authenticateJWT = async (
-  req: any,
-  res: any,
+  req: studentReq,
+  res: Response,
   next: NextFunction
 ) => {
   const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
-    return res.status(403).json({message: 'Access denied. No token provided.'});
+    res.status(403).json({message: 'Access denied. No token provided.'});
+    return;
   }
 
   const decoded = verifyToken(token);
 
   if (!decoded) {
-    return res.status(401).json({message: 'Invalid token'});
+    res.status(401).json({message: 'Invalid token'});
+    return;
   }
   try {
     const studentId = decoded.studentId;
@@ -30,9 +32,10 @@ export const authenticateJWT = async (
     });
 
     if (!student) {
-      return res.status(404).json({
+      res.status(404).json({
         message: 'Student not found',
       });
+      return;
     }
 
     req.student = student;
@@ -44,24 +47,27 @@ export const authenticateJWT = async (
   }
 };
 
-export const authorizeAdmin = (req: any, res: any, next: NextFunction) => {
-  // console.log(req.student);
-  // console.log(req.body);
+export const authorizeAdmin = (
+  req: studentReq,
+  res: Response,
+  next: NextFunction
+) => {
   if (
     (req.student && req.student.role === 'admin') ||
     (req.student && req.student.role === 'super admin')
   ) {
-    next();
+    return next();
   } else {
-    return res.status(403).json({
+    res.status(403).json({
       message: 'You are not authorized to do this action',
     });
+    return;
   }
 };
 
 export const AddAdminAndSuperAdmin = (
-  req: any,
-  res: any,
+  req: studentReq,
+  res: Response,
   next: NextFunction
 ) => {
   if (
@@ -69,9 +75,10 @@ export const AddAdminAndSuperAdmin = (
     req.student.role == 'admin' &&
     (req.body.role == 'super admin' || req.body.role == 'admin')
   ) {
-    return res.status(403).json({
-      message: 'You are not authorized to add admin and super admin',
+    res.status(403).json({
+      message: 'You are not authorized to add admin or super admin',
     });
+    return;
   } else {
     next();
   }

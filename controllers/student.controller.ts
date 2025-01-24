@@ -12,8 +12,7 @@ import {Service} from '../models/serviceModel';
 import {ServiceD} from '../domain_entities/service.entity';
 import {LanguageD} from '../domain_entities/language.entity';
 import {hashPassword} from './auth.controller';
-
-// import {Department} from '../models/departmentModel';
+import {boolean, object, promise} from 'zod';
 
 const studentRepo = AppDataSource.getRepository(Student);
 const serviceRepo = AppDataSource.getRepository(Service);
@@ -30,7 +29,7 @@ export const getStudents = catchAsync(
       limit = 10,
       page = 1,
     } = req.query;
-    //
+
     const queryBuilder = studentRepo.createQueryBuilder('student');
 
     const filters: filterOption = {
@@ -144,22 +143,53 @@ export const deleteStudent = catchAsync(async (req: Request, res: Response) => {
 export const updateStudent = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const studentId = req.params.id;
+    const serviceIds: string[] = req.body.service ?? [];
+    const languageIds: string[] = req.body.language ?? [];
+    const {service, language, ...otherFields} = req.body;
     const reqBody = req.body;
+
     const student = await studentRepo.findOne({
       where: {id: studentId},
       relations: ['department', 'language', 'confession', 'service'],
     });
+
     if (!student) {
       throw new customError('Student not found', 404);
     }
 
-    await studentRepo.update(studentId, reqBody);
+    Object.assign(student, otherFields);
+    ////to update the language and service
+    if (
+      reqBody.language !== null &&
+      reqBody.language !== undefined &&
+      reqBody.language.length > 0
+    ) {
+      const languages = await Promise.all(
+        languageIds.map(async id => await languageRepo.findOneBy({id}))
+      );
+      student.language = languages.filter(Boolean) as LanguageD[];
+    } else {
+      student.language = student.language;
+    }
 
-    const updatedStudent = await studentRepo.findOne({where: {id: studentId}});
+    if (
+      reqBody.service !== null &&
+      reqBody.service !== undefined &&
+      reqBody.service.length > 0
+    ) {
+      const services = await Promise.all(
+        serviceIds.map(async id => await serviceRepo.findOneBy({id}))
+      );
+      student.service = services.filter(Boolean) as ServiceD[];
+    } else {
+      student.service = student.service;
+    }
+
+    await studentRepo.save(student);
 
     return res.status(200).json({
       status: 'success',
-      data: updatedStudent,
+      data: student,
     });
   }
 );

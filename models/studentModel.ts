@@ -59,7 +59,7 @@ export class Student {
   role?: string;
 
   @Column({name: 'current_year', nullable: true, type: 'int'})
-  current_year?: number;
+  current_year?: string;
 
   @ManyToOne(() => Confession, confession => confession.students, {
     nullable: true,
