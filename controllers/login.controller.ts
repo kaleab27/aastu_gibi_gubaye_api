@@ -28,6 +28,12 @@ export const LogIn = catchAsync(async (req: Request, res: Response) => {
 
   const token = generateToken(student.id);
 
+  res.cookie('auth-token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV?.toLowerCase() === 'production',
+    maxAge: 3600 * 1000 * 24 * 30, // a month
+  });
+
   res.status(200).json({
     status: 'success',
     token,
