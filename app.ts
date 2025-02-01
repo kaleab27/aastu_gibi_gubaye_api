@@ -1,4 +1,5 @@
 import express, {json} from 'express';
+import cookieParse from 'cookie-parser'
 import cors from 'cors';
 import {Express} from 'express';
 import {deptRouter} from './routes/department.routes';
@@ -11,6 +12,7 @@ import cookieParser from 'cookie-parser';
 
 const app: Express = express();
 
+<<<<<<< HEAD
 app.use(
   cors({
     origin: ['http://localhost:5173'],
@@ -18,6 +20,10 @@ app.use(
   })
 );
 app.use(cookieParser());
+=======
+app.use(cookieParse())
+app.use(cors());
+>>>>>>> 11f4a734746f88e8424fab3397b45df26d93b6a3
 app.use(json());
 
 app.use('/api/student', studentRouter);

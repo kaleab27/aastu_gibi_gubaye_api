@@ -19,7 +19,6 @@ export const authenticateJWT = async (
     res.status(403).json({message: 'Access denied. No token provided.'});
     return;
   }
-
   const decoded = verifyToken(token);
 
   if (!decoded) {
