@@ -13,6 +13,7 @@ import {ServiceD} from '../domain_entities/service.entity';
 import {LanguageD} from '../domain_entities/language.entity';
 import {hashPassword} from './auth.controller';
 import {boolean, object, promise} from 'zod';
+import {searchUtils} from '../shared/utils/searchUtils';
 
 const studentRepo = AppDataSource.getRepository(Student);
 const serviceRepo = AppDataSource.getRepository(Service);
@@ -28,7 +29,10 @@ export const getStudents = catchAsync(
       sort = 'first_name',
       limit = 10,
       page = 1,
+      keyword = '',
     } = req.query;
+
+    console.log(keyword);
 
     const queryBuilder = studentRepo.createQueryBuilder('student');
 
@@ -44,11 +48,21 @@ export const getStudents = catchAsync(
     //
     filterUtils(queryBuilder, filters);
 
-    const students = await queryBuilder
+    queryBuilder
       .leftJoinAndSelect('student.department', 'department')
       .leftJoinAndSelect('student.service', 'service')
       .leftJoinAndSelect('student.language', 'language')
-      .leftJoinAndSelect('student.confession', 'confession')
+      .leftJoinAndSelect('student.confession', 'confession');
+
+    searchUtils(queryBuilder, keyword.toString());
+
+    const skip = (Number(page) - 1) * Number(limit);
+    queryBuilder.take(Number(limit));
+    queryBuilder.skip(skip);
+
+    let students = await queryBuilder
+      .addSelect(`LOWER(student.${sort})`, 'loweredStu')
+      .orderBy('loweredStu', 'ASC')
       .getMany();
 
     res.status(200).json({

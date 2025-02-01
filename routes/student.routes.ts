@@ -15,10 +15,10 @@ import {LogIn} from '../controllers/login.controller';
 
 const router = Router();
 
-//get all student authenticateJWT, authorizeAdmin,
-//create student authenticateJWT, authorizeAdmin, AddAdminAndSuperAdmin,
-
-router.route('/').get(getStudents).post(createStudent);
+router
+  .route('/')
+  .get(authenticateJWT, authorizeAdmin, getStudents)
+  .post(authenticateJWT, authorizeAdmin, AddAdminAndSuperAdmin, createStudent);
 
 router
   .route('/:id')

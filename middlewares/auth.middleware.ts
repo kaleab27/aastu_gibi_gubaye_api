@@ -11,13 +11,14 @@ export const authenticateJWT = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.header('Authorization')?.split(' ')[1];
+  const token = req.cookies['auth-token'];
+  console.log(token);
+  // const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
     res.status(403).json({message: 'Access denied. No token provided.'});
     return;
   }
-
   const decoded = verifyToken(token);
 
   if (!decoded) {
