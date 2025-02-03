@@ -26,6 +26,8 @@ export const getStudents = catchAsync(
       service,
       language,
       confession,
+      role,
+      gender,
       sort = 'first_name',
       limit = 10,
       page = 1,
@@ -41,20 +43,24 @@ export const getStudents = catchAsync(
       confession: typeof confession === 'string' ? confession : undefined,
       language: typeof language === 'string' ? language : undefined,
       service: typeof service === 'string' ? service : undefined,
+      role: typeof role === 'string' ? role : undefined,
+      gender: typeof gender === 'string' ? gender : undefined,
       page: Number(page),
       limit: Number(limit),
       sort: typeof sort === 'string' ? sort : 'first_name',
     };
-    //
-    filterUtils(queryBuilder, filters);
 
+    console.log(filters);
     queryBuilder
       .leftJoinAndSelect('student.department', 'department')
       .leftJoinAndSelect('student.service', 'service')
       .leftJoinAndSelect('student.language', 'language')
       .leftJoinAndSelect('student.confession', 'confession');
 
-    searchUtils(queryBuilder, keyword.toString());
+    filterUtils(queryBuilder, filters);
+    if (keyword) {
+      searchUtils(queryBuilder, keyword.toString());
+    }
 
     const skip = (Number(page) - 1) * Number(limit);
     queryBuilder.take(Number(limit));
