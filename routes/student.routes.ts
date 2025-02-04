@@ -14,10 +14,10 @@ import {
 import {LogIn} from '../controllers/login.controller';
 
 const router = Router();
-//authenticateJWT, authorizeAdmin,
+//
 router
   .route('/')
-  .get(getStudents)
+  .get(authenticateJWT, authorizeAdmin, getStudents)
   .post(authenticateJWT, authorizeAdmin, AddAdminAndSuperAdmin, createStudent);
 
 router

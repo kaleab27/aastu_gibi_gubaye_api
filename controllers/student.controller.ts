@@ -34,8 +34,6 @@ export const getStudents = catchAsync(
       keyword = '',
     } = req.query;
 
-    console.log(keyword);
-
     const queryBuilder = studentRepo.createQueryBuilder('student');
 
     const filters: filterOption = {
@@ -50,7 +48,6 @@ export const getStudents = catchAsync(
       sort: typeof sort === 'string' ? sort : 'first_name',
     };
 
-    console.log(filters);
     queryBuilder
       .leftJoinAndSelect('student.department', 'department')
       .leftJoinAndSelect('student.service', 'service')
