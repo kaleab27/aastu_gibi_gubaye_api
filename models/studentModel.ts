@@ -48,7 +48,7 @@ export class Student {
   @JoinColumn({name: 'department_id'})
   department!: Department;
 
-  @Column({name: 'email', unique: true, type: 'varchar', nullable: true})
+  @Column({name: 'email', type: 'varchar', nullable: true})
   email?: string;
 
   @ManyToMany(() => Service, service => service.students, {cascade: true})

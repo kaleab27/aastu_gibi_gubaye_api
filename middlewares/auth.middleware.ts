@@ -11,9 +11,9 @@ export const authenticateJWT = async (
   res: Response,
   next: NextFunction
 ) => {
-  const token = req.cookies['auth-token'];
-  console.log(token);
-  // const token = req.header('Authorization')?.split(' ')[1];
+  // const token = req.cookies['auth-token'];
+  // console.log(token);
+  const token = req.header('Authorization')?.split(' ')[1];
 
   if (!token) {
     res.status(403).json({message: 'Access denied. No token provided.'});
@@ -55,7 +55,7 @@ export const authorizeAdmin = (
 ) => {
   if (
     (req.student && req.student.role === 'admin') ||
-    (req.student && req.student.role === 'super admin')
+    (req.student && req.student.role === 'Super-admin')
   ) {
     return next();
   } else {
@@ -74,7 +74,7 @@ export const AddAdminAndSuperAdmin = (
   if (
     req.student &&
     req.student.role == 'admin' &&
-    (req.body.role == 'super admin' || req.body.role == 'admin')
+    (req.body.role == 'Super-admin' || req.body.role == 'admin')
   ) {
     res.status(403).json({
       message: 'You are not authorized to add admin or super admin',
