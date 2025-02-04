@@ -29,8 +29,6 @@ export const filterUtils = (
     limit = 10,
   } = filters;
 
-  console.log(service);
-  //
   if (department) {
     queryBuilder.andWhere('department.department = :department', {department});
   }
