@@ -2,7 +2,6 @@ import 'reflect-metadata';
 import {AppDataSource} from '../data_source';
 import {Student} from '../models/studentModel';
 
-import {createQueryBuilder} from 'typeorm';
 import {catchAsync} from '../shared/utils/catchAsync.utils';
 import {customError} from '../shared/utils/customError';
 import {filterUtils, filterOption} from '../shared/utils/filterUtils';
