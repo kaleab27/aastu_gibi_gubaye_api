@@ -58,7 +58,7 @@ export class Student {
   @Column({name: 'role', default: 'std_usr', type: 'varchar'})
   role?: string;
 
-  @Column({name: 'current_year', nullable: true, type: 'int'})
+  @Column({name: 'current_year', type: 'int'})
   current_year?: string;
 
   @ManyToOne(() => Confession, confession => confession.students, {
