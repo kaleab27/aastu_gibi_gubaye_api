@@ -55,7 +55,7 @@ export class Student {
   @JoinTable()
   service?: Service[];
 
-  @Column({name: 'role', default: 'std_usr', type: 'varchar'})
+  @Column({name: 'role', default: 'std-user', type: 'varchar'})
   role?: string;
 
   @Column({name: 'current_year', type: 'int'})
