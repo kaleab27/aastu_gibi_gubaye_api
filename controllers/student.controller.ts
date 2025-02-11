@@ -13,6 +13,7 @@ import {LanguageD} from '../domain_entities/language.entity';
 import {hashPassword} from './auth.controller';
 import {boolean, object, promise} from 'zod';
 import {searchUtils} from '../shared/utils/searchUtils';
+import {studentReq} from '../types/custom';
 
 const studentRepo = AppDataSource.getRepository(Student);
 const serviceRepo = AppDataSource.getRepository(Service);
@@ -25,6 +26,7 @@ export const getStudents = catchAsync(
       service,
       language,
       confession,
+      current_year,
       role,
       gender,
       sort = 'first_name',
@@ -41,6 +43,7 @@ export const getStudents = catchAsync(
       language: typeof language === 'string' ? language : undefined,
       service: typeof service === 'string' ? service : undefined,
       role: typeof role === 'string' ? role : undefined,
+      current_year: typeof current_year === 'string' ? current_year : undefined,
       gender: typeof gender === 'string' ? gender : undefined,
       page: Number(page),
       limit: Number(limit),
@@ -206,6 +209,16 @@ export const updateStudent = catchAsync(
     return res.status(200).json({
       status: 'success',
       data: student,
+    });
+  }
+);
+
+export const getLogedInPerson = catchAsync(
+  async (req: studentReq, res: Response) => {
+    const data = req.student;
+    return res.status(200).json({
+      status: 'success',
+      data: data,
     });
   }
 );

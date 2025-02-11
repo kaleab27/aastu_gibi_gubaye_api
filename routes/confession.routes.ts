@@ -6,10 +6,13 @@ import {
   updateConfession,
   deleteConfession,
 } from '../controllers/confession.controller';
-// const {createConfession} = confessionController;
+import {authenticateJWT, authorizeAdmin} from '../middlewares/auth.middleware';
 const router = Router();
 
-router.route('/').post(createConfession).get(getAllConfession);
+router
+  .route('/')
+  .post(authenticateJWT, authorizeAdmin, createConfession)
+  .get(getAllConfession);
 
 router
   .route('/:id')

@@ -5,6 +5,7 @@ import {
   getStudents,
   getOneStudent,
   updateStudent,
+  getLogedInPerson,
 } from '../controllers/student.controller';
 import {
   AddAdminAndSuperAdmin,
@@ -25,6 +26,8 @@ router
   .get(getOneStudent)
   .delete(authenticateJWT, authorizeAdmin, deleteStudent)
   .put(authenticateJWT, authorizeAdmin, updateStudent);
+
+router.route('/logedin/person').get(authenticateJWT, getLogedInPerson);
 
 router.route('/login').post(LogIn);
 
