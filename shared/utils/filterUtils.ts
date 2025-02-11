@@ -5,6 +5,7 @@ export interface filterOption {
   department?: string;
   language?: string;
   service?: string;
+  current_year?: string;
   confession?: string;
   role?: string;
   gender?: string;
@@ -22,6 +23,7 @@ export const filterUtils = (
     service,
     language,
     confession,
+    current_year,
     role,
     gender,
     page = 1,
@@ -46,6 +48,11 @@ export const filterUtils = (
   }
   if (gender) {
     queryBuilder.andWhere('student.gender = :gender', {gender});
+  }
+  if (current_year) {
+    queryBuilder.andWhere('student.current_year = :current_year', {
+      current_year,
+    });
   }
 
   return queryBuilder;
