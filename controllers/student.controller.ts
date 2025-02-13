@@ -14,6 +14,7 @@ import {hashPassword} from './auth.controller';
 import {boolean, object, promise} from 'zod';
 import {searchUtils} from '../shared/utils/searchUtils';
 import {studentReq} from '../types/custom';
+import {studentAddValidator} from '../shared/validators/student.validator';
 
 const studentRepo = AppDataSource.getRepository(Student);
 const serviceRepo = AppDataSource.getRepository(Service);
@@ -72,6 +73,7 @@ export const getStudents = catchAsync(
 
     res.status(200).json({
       status: 'success',
+      length: students.length,
       data: {
         students,
       },
@@ -86,6 +88,8 @@ export const createStudent = catchAsync(async (req: Request, res: Response) => {
   const languageIds: string[] = req.body.language ?? [];
   const services: ServiceD[] = [];
   const languages: LanguageD[] = [];
+
+  await studentAddValidator(req.body);
 
   serviceIds.forEach(async id => {
     const service = await serviceRepo.findOneBy({id});
