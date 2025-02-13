@@ -15,7 +15,7 @@ import {
 import {LogIn} from '../controllers/login.controller';
 
 const router = Router();
-//
+
 router
   .route('/')
   .get(authenticateJWT, authorizeAdmin, getStudents)

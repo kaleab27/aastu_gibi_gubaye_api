@@ -9,6 +9,7 @@ import {
 import {authenticateJWT, authorizeAdmin} from '../middlewares/auth.middleware';
 const router = Router();
 
+//
 router
   .route('/')
   .post(authenticateJWT, authorizeAdmin, createConfession)

@@ -8,6 +8,7 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noImplicitAny": true,
+    "strict": true, //add strict true
     "moduleResolution": "node",
     "sourceMap": true,
     "outDir": "dist",
@@ -17,7 +18,7 @@
     "noImplicitReturns": false,
     "paths": {
       "*": ["node_modules/*", "src/types/*"]
-    },
+    }
     // "types": ["./types/custom.d.ts"]
   },
   "include": ["./**/*.ts"],
