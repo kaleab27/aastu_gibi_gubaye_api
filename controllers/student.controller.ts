@@ -207,7 +207,7 @@ export const updateStudent = catchAsync(
     } else {
       student.service = student.service;
     }
-
+    // Object.assign(student, otherFields);
     await studentRepo.save(student);
 
     return res.status(200).json({
